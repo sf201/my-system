@@ -24,7 +24,7 @@ public class PriceDict extends BaseObject {
     @InitFieldAnnotation("单价")
     private float price;
     @InitFieldAnnotation("备注")
-    private float memo;
+    private String memo;
 
     public PriceDict() {
         this.setId(StringUtil.generator());
@@ -48,7 +48,7 @@ public class PriceDict extends BaseObject {
         return price;
     }
     @Column(name="memo")
-    public float getMemo() {
+    public String getMemo() {
         return memo;
     }
 
@@ -68,7 +68,7 @@ public class PriceDict extends BaseObject {
         this.price = price;
     }
 
-    public void setMemo(float memo) {
+    public void setMemo(String memo) {
         this.memo = memo;
     }
 }

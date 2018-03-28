@@ -112,6 +112,83 @@ export const appRouter = [
                 component: () => import('@/views/my-system/system-config/area-config.vue')
             },
             {
+                path: 'erector-config',
+                icon: 'ios-people',
+                name: 'erectorConfig',
+                title: '安装师傅名录',
+                component: () => import('@/views/my-system/system-config/erector-config.vue')
+            },
+            {
+                path: 'price-config',
+                icon: 'social-yen',
+                name: 'priceConfig',
+                title: '打包价外费用名录',
+                component: () => import('@/views/my-system/system-config/price-config.vue')
+            },
+            {
+                path: 'store-config',
+                icon: 'filing',
+                name: 'storeConfig',
+                title: '仓库名录',
+                component: () => import('@/views/my-system/system-config/store-config.vue')
+            },
+            {
+                path: 'fix-reporter-config',
+                icon: 'ios-body-outline',
+                name: 'fixReporterConfig',
+                title: '报修人员名录',
+                component: () => import('@/views/my-system/system-config/fix-reporter-config.vue')
+            },
+            {
+                path: 'fix-type-config',
+                icon: 'information-circled',
+                name: 'fixTypeConfig',
+                title: '维修品类名录',
+                component: () => import('@/views/my-system/system-config/fix-type-config.vue')
+            },
+            {
+                path: 'fix-item-config',
+                icon: 'android-menu',
+                name: 'fixItemConfig',
+                title: '维修名录',
+                component: () => import('@/views/my-system/system-config/fix-item-config.vue')
+            },
+            {
+                path: 'config-type-config',
+                icon: 'ios-cog',
+                name: 'configTypeConfig',
+                title: '配置类型名录',
+                component: () => import('@/views/my-system/system-config/config-type-config.vue')
+            },
+            {
+                path: 'exchange-reason-config',
+                icon: 'reply',
+                name: 'exchangeReasonConfig',
+                title: '退换原因名录',
+                component: () => import('@/views/my-system/system-config/exchange-reason-config.vue')
+            },
+            {
+                path: 'exchange-record-config',
+                icon: 'arrow-swap',
+                name: 'exchangeRecordConfig',
+                title: '退换记录名录',
+                component: () => import('@/views/my-system/system-config/exchange-record-config.vue')
+            },
+            {
+                path: 'fault-config',
+                icon: 'wrench',
+                name: 'faultConfig',
+                title: '故障名录',
+                component: () => import('@/views/my-system/system-config/fault-config.vue')
+            },
+            {
+                path: 'punishment-config',
+                icon: 'cash',
+                name: 'punishmentConfig',
+                title: '扣罚名录',
+                component: () => import('@/views/my-system/system-config/punishment-config.vue')
+            },
+            {
                 path: 'text-editor',
                 icon: 'compose',
                 name: 'text-editor',

@@ -11,8 +11,73 @@ export default {
     getAreaDict() {
         return doGet("getAreaDict");
     },
-    saveAreaDict(query,oper='save') {
-        console.log(Object.assign({oper}, {dict: query}));
-        return doPost("saveAreaDict",Object.assign({oper},{dict:query}));
-    }
-}
+    saveAreaDict(query, oper = 'save') {
+        return doPost("saveAreaDict", Object.assign({oper}, {dict: query}));
+    },
+    getErectorDict() {
+        return doGet("getErectorDict");
+    },
+    saveErectorDict(query, oper = 'save') {
+        return doPost("saveErectorDict", Object.assign({oper}, {dict: query}));
+    },
+    getPriceDict() {
+        return doGet("getPriceDict");
+    },
+    savePriceDict(query,oper='save') {
+        return doPost("savePriceDict", Object.assign({oper}, {dict: query}));
+    },
+    getStoreDict() {
+        return doGet("getStoreDict");
+    },
+    saveStoreDict(query,oper='save') {
+        return doPost("saveStoreDict", Object.assign({oper}, {dict: query}));
+    },
+    getFixReporterDict() {
+        return doGet("getFixReporterDict");
+    },
+    saveFixReporterDict(query,oper='save') {
+        return doPost("saveFixReporterDict", Object.assign({oper}, {dict: query}));
+    },
+    getFixTypeDict() {
+        return doGet("getFixTypeDict");
+    },
+    saveFixTypeDict(query,oper='save') {
+        return doPost("saveFixTypeDict", Object.assign({oper}, {dict: query}));
+    },
+    getFixItemDict() {
+        return doGet("getFixItemDict");
+    },
+    saveFixItemDict(query,oper='save') {
+        return doPost("saveFixItemDict", Object.assign({oper}, {dict: query}));
+    },
+    getConfigTypeDict() {
+        return doGet("getConfigTypeDict");
+    },
+    saveConfigTypeDict(query,oper='save') {
+        return doPost("saveConfigTypeDict", Object.assign({oper}, {dict: query}));
+    },
+    getExchangeReasonDict() {
+        return doGet("getExchangeReasonDict");
+    },
+    saveExchangeReasonDict(query,oper='save') {
+        return doPost("saveExchangeReasonDict", Object.assign({oper}, {dict: query}));
+    },
+    getExchangeRecordDict() {
+        return doGet("getExchangeRecordDict");
+    },
+    saveExchangeRecordDict(query,oper='save') {
+        return doPost("saveExchangeRecordDict", Object.assign({oper}, {dict: query}));
+    },
+    getFaultDict() {
+        return doGet("getFaultDict");
+    },
+    saveFaultDict(query,oper='save') {
+        return doPost("saveFaultDict", Object.assign({oper}, {dict: query}));
+    },
+    getPunishmentDict() {
+        return doGet("getPunishmentDict");
+    },
+    savePunishmentDict(query,oper='save') {
+        return doPost("savePunishmentDict", Object.assign({oper}, {dict: query}));
+    },
+};
