@@ -1,6 +1,6 @@
 package cn.sf201.core.vo;
 
-import cn.sf201.core.entity.AreaDict;
+import cn.sf201.core.entity.system.AreaDict;
 
 import java.util.List;
 

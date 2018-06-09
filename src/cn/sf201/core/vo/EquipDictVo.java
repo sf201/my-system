@@ -1,6 +1,6 @@
 package cn.sf201.core.vo;
 
-import cn.sf201.core.entity.EquipDict;
+import cn.sf201.core.entity.system.EquipDict;
 
 import java.util.List;
 

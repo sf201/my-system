@@ -112,7 +112,7 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 	/***
 	 * 批量禁用对象
 	 */
-	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void markdeletes(final List<String> ids) {
 		final String hql = "update "+this.getClassName()+" as t set t.valid=false where t.id in (:ids)";
 		getHibernateTemplate().execute(new HibernateCallback() { 
@@ -126,14 +126,14 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 	/**
 	 * 查询所有的数据
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<? extends BaseObject> queryByCriteria(DetachedCriteria criteria) {
 		return this.getHibernateTemplate().findByCriteria(criteria);
 	}
 	/**
 	 * 取得实体类型
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public BaseObject getBaseObject()  {
 		try {
 			return (BaseObject) Class.forName(this.getClassName()).newInstance();
@@ -141,15 +141,15 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 			throw new OperateException("获取对象出错!对象名称:"+this.getClassName());
 		} 
 	}
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public Object query(String id) {
 		return this.getHibernateTemplate().get(this.getBaseObject().getClass(), id);
 	}
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<? extends BaseObject> queryAll() {
 		return this.queryByCriteria(this.getCriteria(null));
 	}
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	private int countCriteriaResult(Criteria c) {
 		CriteriaImpl impl = (CriteriaImpl) c;
 		Projection projection = impl.getProjection();
@@ -183,7 +183,7 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 	 * @param detachedCriteria
 	 * @return
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List  queryByCriteria(final DetachedCriteria detachedCriteria,final int maxSize){
 		return (List) getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session)
@@ -201,7 +201,7 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 	/**
 	 * 分页查询
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<BaseObject> queryByCriteria(final DetachedCriteria detachedCriteria, final Page page) {
 		return (List) getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session)
@@ -224,7 +224,7 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 	 * @param page
 	 * @return
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List queryByHql(final String hql,final  List parameters, Page page) { 
 		String afterfromhql=hql.substring(hql.indexOf("from")+4).trim();
 		String counthql="select count(id) from ";
@@ -281,7 +281,7 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 		 querylist.setFirstResult(page.getFirstResult()); 
         return querylist.setMaxResults(page.getPageSize()).list(); 
 	}
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public DetachedCriteria getCriteria(Boolean valid) {
 		DetachedCriteria criteria=DetachedCriteria.forClass(getBaseObject().getClass());
 		if(valid!=null){//等于null时不过滤
@@ -289,14 +289,14 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 		}
 		return criteria;
 	}
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<? extends BaseObject> queryByProperty(String propertyName, String propertyValue) {
 		DetachedCriteria criteria=DetachedCriteria.forClass(getBaseObject().getClass());
 		criteria.add(Restrictions.eq(propertyName, propertyValue));
 		criteria.addOrder(Order.desc("id"));
 		return this.queryByCriteria(criteria);
 	}
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<? extends BaseObject> queryByProperty(String propertyName, List propertyValues) {
 		DetachedCriteria criteria=DetachedCriteria.forClass(getBaseObject().getClass());
 		criteria.add(Restrictions.in(propertyName, propertyValues));
@@ -306,7 +306,7 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 	/***
 	 * 待优化
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public BaseObject queryFirstByProperty(String propertyName, String propertyValue) {
 		DetachedCriteria criteria=DetachedCriteria.forClass(getBaseObject().getClass());
 		criteria.add(Restrictions.eq(propertyName, propertyValue));
@@ -320,7 +320,7 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 	/***
 	 * 待优化
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public BaseObject queryFirstByProperty(Class cls,String propertyName, String propertyValue) {
 		DetachedCriteria criteria=DetachedCriteria.forClass(cls);
 		criteria.add(Restrictions.eq(propertyName, propertyValue));
@@ -332,12 +332,12 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 		return null;
 	}
 	
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<BaseObject> queryByProperty(Class cls, String propertyName,
 			String propertyValue) {
 		return this.getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(cls).add(Restrictions.eq(propertyName, propertyValue)))	;
 	}
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public String getClassName() {
 		return className;
 	}
@@ -398,7 +398,7 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 	 * @param Sql
 	 * @return
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List queryBySql(final String sql,final  List parameters) { 
 		SQLQuery querylist = getSession().createSQLQuery(sql);
 		 if(parameters!=null && parameters.size()>0){ 
@@ -414,16 +414,16 @@ public abstract class BaseDomainImpl extends HibernateDaoSupport implements Base
 	 * @param sql
 	 * @param parameters
 	 */
-	public void executeBySQL(final String sql, final  List parameters){
+	public int executeBySQL(final String sql, final  List parameters){
 		SQLQuery query = getSession().createSQLQuery(sql);
 		 if(parameters!=null && parameters.size()>0){ 
 			 for (int i = 0; i < parameters.size(); i++){
 				 query.setParameter(i, parameters.get(i));
 			 }
 		 }
-        query.executeUpdate();
+        return  query.executeUpdate();
 	}
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List statisticsByHql(final String hql,Object[] objs){
 		List list=this.getHibernateTemplate().find(hql, objs);
 		return list;

@@ -1,12 +1,11 @@
 package cn.sf201.core.controller;
 
 import cn.sf201.core.common.Common;
-import cn.sf201.core.domain.BaseDomain;
 import cn.sf201.core.entity.*;
+import cn.sf201.core.entity.system.*;
 import cn.sf201.core.exception.RequestProcessException;
 import cn.sf201.core.service.DictService;
 import cn.sf201.core.vo.DictSingleVo;
-import cn.sf201.core.vo.DictVo;
 import cn.sf201.core.vo.ResponseVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * Created by sf201 on 9/5/2017.
@@ -103,7 +103,12 @@ public class SystemController extends BaseAjaxController {
     }
 
     public void getStoreDict(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        doGet(request, response, StoreDict.class);
+        Map<String, Object> para = this.getPostParameters(request);
+        try {
+            this.outJsonObject(response, dictService.getStoreDictList(para));
+        } catch (Exception ex) {
+            this.outJsonObject(response, ex.getMessage());
+        }
     }
 
     public void saveStoreDict(HttpServletRequest request, HttpServletResponse response) {
@@ -173,8 +178,37 @@ public class SystemController extends BaseAjaxController {
     public void savePunishmentDict(HttpServletRequest request, HttpServletResponse response) {
         doSave(request, response, PunishmentDict.class);
     }
+    public void getHouseResource(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            Map<String, Object> para = this.getPostParameters(request);
+            this.outJsonObject(response, dictService.getHouseResourceList(para));
+        } catch (Exception ex) {
+            this.outJsonFail(response, ex.getMessage());
+        }
+    }
 
-    private <T extends BaseObject> void doSave(HttpServletRequest request, HttpServletResponse response, Class<T> clazz) {
+    public void saveHouseResource(HttpServletRequest request, HttpServletResponse response) {
+        doSave(request, response, HouseResource.class);
+    }
+    public void getItemDict(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        doGet(request, response, ItemDict.class);
+    }
+
+    public void saveItemDict(HttpServletRequest request, HttpServletResponse response) {
+        doSave(request, response, ItemDict.class);
+    }
+     public void getExportTypeDict(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        doGet(request, response, ExportTypeDict.class);
+    }
+
+    public void saveExportTypeDict(HttpServletRequest request, HttpServletResponse response) {
+        doSave(request, response, ExportTypeDict.class);
+    }
+
+
+
+
+    private <T extends DictObject> void doSave(HttpServletRequest request, HttpServletResponse response, Class<T> clazz) {
         try {
 //            DictVo<T> dictVo = this.getPostDictVo(request, clazz);
             DictSingleVo<T> dictVo = this.getPostDictSingleVo(request, clazz);

@@ -12,8 +12,8 @@
             </Col>
             <Col span="16" class="height-100">
                 <Row type="flex" align="middle" justify="center" class="height-100">
-                    <count-up 
-                        class="infor-card-count user-created-count" 
+                    <amount-up
+                        class="infor-card-amount user-created-amount"
                         :id-name="idName" 
                         :end-val="endVal" 
                         :color="color"
@@ -21,7 +21,7 @@
                         :countWeight="countWeight"
                     >
                         <p class="infor-intro-text" slot="intro">{{ introText }}</p>
-                    </count-up>
+                    </amount-up>
                 </Row>
             </Col>
         </div>

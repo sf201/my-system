@@ -224,6 +224,6 @@ public class IdcardUtil {
 		// String IDCardNum="210102198208264114";
 		String IDCardNum = "130185198811281323";
 		System.out.println(IdcardUtil.getCsy(IDCardNum));
-		// System.out.println(cc.isDate("1996-02-29"));
+		// system.out.println(cc.isDate("1996-02-29"));
 	}
 }

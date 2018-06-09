@@ -3,10 +3,12 @@ package cn.sf201.core.service;
 import cn.sf201.core.domain.AreaDictDomain;
 import cn.sf201.core.domain.BaseDomain;
 import cn.sf201.core.entity.*;
+import cn.sf201.core.entity.system.*;
 import cn.sf201.core.exception.RequestProcessException;
+import cn.sf201.core.utils.MapUtil;
+import cn.sf201.core.utils.StringUtil;
 import cn.sf201.core.vo.DictSingleVo;
 import cn.sf201.core.vo.DictVo;
-import cn.sf201.core.vo.EquipDictVo;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +56,12 @@ public class DictService {
     private BaseDomain equipDictDomain;
     @Resource(name="equipAccessoriesDomain")
     private BaseDomain equipAccessoriesDomain;
+    @Resource(name="houseResourceDomain")
+    private BaseDomain houseResourceDomain;
+    @Resource(name="itemDictDomain")
+    private BaseDomain itemDictDomain;
+    @Resource(name="exportItemDictDomain")
+    private BaseDomain exportItemDictDomain;
     /**
      * 获取区域字典
      * @return
@@ -137,11 +146,12 @@ public class DictService {
      * @return
      * @throws RequestProcessException
      */
-    public <T extends BaseObject> T saveDict(DictSingleVo<T> dictVo, Class<T> clazz) throws RequestProcessException {
+    public <T extends DictObject> T saveDict(DictSingleVo<T> dictVo, Class<T> clazz) throws RequestProcessException {
         BaseDomain domain = getDomainByClassName(clazz.getName());
         if (domain == null) {
             throw new RequestProcessException("获取数据操作对象失败！");
         }
+        dictVo.getDict().setInputCode();
         try {
             if ("delete".equals(dictVo.getOper())) {
                 domain.delete(dictVo.getDict());
@@ -193,6 +203,28 @@ public class DictService {
         return list;
     }
 
+    public List<HouseResource> getHouseResourceList(Map<String,Object> para) throws RequestProcessException {
+        String communityName = MapUtil.getStringValue("communityName", para);
+        DetachedCriteria criteria = DetachedCriteria.forClass(HouseResource.class);
+        if (!StringUtil.isNullOrEmpty(communityName)) {
+            criteria.add(Restrictions.like("communityName", "%" + communityName + "%"));
+        }
+        return houseResourceDomain.queryByCriteria(criteria);
+    }
+
+    public List<StoreDict> getStoreDictList(Map<String,Object> para) throws RequestProcessException {
+        String storeCode = MapUtil.getStringValue("storeCode", para);
+        String storeProperty = MapUtil.getStringValue("storeProperty", para);
+        DetachedCriteria criteria = DetachedCriteria.forClass(StoreDict.class);
+        if (!StringUtil.isNullOrEmpty(storeCode)) {
+            criteria.add(Restrictions.eq("storeCode", storeCode));
+        }
+        if (!StringUtil.isNullOrEmpty(storeProperty)) {
+            criteria.add(Restrictions.eq("storeProperty", storeProperty));
+        }
+        return storeDictDomain.queryByCriteria(criteria);
+    }
+
     public boolean saveEquipDict(EquipDict equipDict) throws RequestProcessException {
         try {
             equipDictDomain.merge(equipDict);
@@ -231,30 +263,37 @@ public class DictService {
     }
 
     private BaseDomain getDomainByClassName(String className) {
-        if (className.equals("cn.sf201.core.entity.AreaDict")) {
+        if (className.equals("cn.sf201.core.entity.system.AreaDict")) {
             return areaDictDomain;
-        } else if (className.equals("cn.sf201.core.entity.ErectorDict")) {
+        } else if (className.equals("cn.sf201.core.entity.system.ErectorDict")) {
             return erectorDictDomain;
-        } else if (className.equals("cn.sf201.core.entity.PriceDict")) {
+        } else if (className.equals("cn.sf201.core.entity.system.PriceDict")) {
             return priceDictDomain;
-        }else if (className.equals("cn.sf201.core.entity.StoreDict")) {
+        }else if (className.equals("cn.sf201.core.entity.system.StoreDict")) {
             return storeDictDomain;
-        }else if (className.equals("cn.sf201.core.entity.FixReporterDict")) {
+        }else if (className.equals("cn.sf201.core.entity.system.FixReporterDict")) {
             return fixReporterDictDomain;
-        }else if (className.equals("cn.sf201.core.entity.FixTypeDict")) {
+        }else if (className.equals("cn.sf201.core.entity.system.FixTypeDict")) {
             return fixTypeDictDomain;
-        }else if (className.equals("cn.sf201.core.entity.FixItemDict")) {
+        }else if (className.equals("cn.sf201.core.entity.system.FixItemDict")) {
             return fixItemDictDomain;
-        }else if (className.equals("cn.sf201.core.entity.ConfigTypeDict")) {
+        }else if (className.equals("cn.sf201.core.entity.system.ConfigTypeDict")) {
             return configTypeDictDomain;
-        }else if (className.equals("cn.sf201.core.entity.ExchangeReasonDict")) {
+        }else if (className.equals("cn.sf201.core.entity.system.ExchangeReasonDict")) {
             return exchangeReasonDictDomain;
-        }else if (className.equals("cn.sf201.core.entity.ExchangeRecordDict")) {
+        }else if (className.equals("cn.sf201.core.entity.system.ExchangeRecordDict")) {
             return exchangeRecordDictDomain;
-        }else if (className.equals("cn.sf201.core.entity.FaultDict")) {
+        }else if (className.equals("cn.sf201.core.entity.system.FaultDict")) {
             return faultDictDomain;
-        }else if (className.equals("cn.sf201.core.entity.PunishmentDict")) {
+        }else if (className.equals("cn.sf201.core.entity.system.PunishmentDict")) {
             return punishmentDictDomain;
+        }
+        else if (className.equals("cn.sf201.core.entity.system.HouseResource")) {
+            return houseResourceDomain;
+        } else if (className.equals("cn.sf201.core.entity.system.ItemDict")) {
+            return itemDictDomain;
+        }else if (className.equals("cn.sf201.core.entity.system.ExportTypeDict")) {
+            return exportItemDictDomain;
         }
         return null;
     }

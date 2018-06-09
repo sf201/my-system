@@ -26,8 +26,8 @@ export default {
     savePriceDict(query,oper='save') {
         return doPost("savePriceDict", Object.assign({oper}, {dict: query}));
     },
-    getStoreDict() {
-        return doGet("getStoreDict");
+    getStoreDict(query) {
+        return doPost("getStoreDict",query);
     },
     saveStoreDict(query,oper='save') {
         return doPost("saveStoreDict", Object.assign({oper}, {dict: query}));
@@ -49,6 +49,12 @@ export default {
     },
     saveFixItemDict(query,oper='save') {
         return doPost("saveFixItemDict", Object.assign({oper}, {dict: query}));
+    },
+    getItemDict() {
+        return doGet("getItemDict");
+    },
+    saveItemDict(query,oper='save') {
+        return doPost("saveItemDict", Object.assign({oper}, {dict: query}));
     },
     getConfigTypeDict() {
         return doGet("getConfigTypeDict");
@@ -80,4 +86,16 @@ export default {
     savePunishmentDict(query,oper='save') {
         return doPost("savePunishmentDict", Object.assign({oper}, {dict: query}));
     },
+    getHouseResource(query) {
+        return doPost("getHouseResource",query);
+    },
+    saveHouseResource(query,oper='save') {
+        return doPost("saveHouseResource", Object.assign({oper}, {dict: query}));
+    },
+    getExportTypeDict() {
+        return doGet("getExportTypeDict");
+    },
+    saveExportTypeDict(query,oper='save') {
+        return doPost("saveExportTypeDict", Object.assign({oper}, {dict: query}));
+    }
 };

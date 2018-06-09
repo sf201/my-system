@@ -25,6 +25,12 @@
                 <FormItem label="仓库名称">
                     <Input v-model="query.name"></Input>
                 </FormItem>
+                <FormItem label="仓库属性">
+                    <Select v-model="query.storeProperty">
+                        <Option value="0">正常</Option>
+                        <Option value="1">不良品库房</Option>
+                    </Select>
+                </FormItem>
             </Form>
         </Modal>
     </Card>
@@ -33,6 +39,9 @@
 <script>
     import invokeSrv from "../../../libs/invoke.service";
     import sysCfgSrv from "../../../libs/systemConfig.service";
+
+    let storePropertyDict = [{code:"0",name:"正常"},{code:"1",name:"不良品库房"}];
+    let dictFilter = window.Vue.filter("dict");
 
     export default {
         data() {
@@ -87,6 +96,13 @@
                     {
                         key: 'name',
                         title: '仓库名称'
+                    },
+                    {
+                        key: 'storeProperty',
+                        title: '仓库属性',
+                        render:(h,params)=> {
+                            return h("div", dictFilter(params.row.storeProperty, storePropertyDict));
+                        }
                     }
                 ],
                 storeDictList: [],

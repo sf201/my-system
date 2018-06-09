@@ -1,6 +1,6 @@
 <style lang="less">
     @import '../../../styles/common.less';
-    @import './count-to.less';
+    @import './amount-to.less';
 </style>
 
 <template>
@@ -13,7 +13,7 @@
                         CountTo组件基础用法
                     </p>
                     <Row type="flex" justify="center" align="middle" class="countto-page-row">
-                        <div class="count-to-con">
+                        <div class="amount-to-con">
                             <CountTo :endVal="2534"/>
                         </div>
                     </Row>
@@ -26,7 +26,7 @@
                         可添加左右文字
                     </p>
                     <Row type="flex" justify="center" align="middle" class="countto-page-row">
-                        <div class="count-to-con">
+                        <div class="amount-to-con">
                             <CountTo :endVal="2534">
                                 <span slot="leftText">Total:&nbsp;</span>
                                 <span slot="rightText">&nbsp;times</span>
@@ -42,7 +42,7 @@
                         自定义样式
                     </p>
                     <Row type="flex" justify="center" align="middle" class="countto-page-row">
-                        <div class="count-to-con">
+                        <div class="amount-to-con">
                             <CountTo :endVal="2534" :mainStyle="mainStyle" :countStyle="countStyle">
                                 <span slot="leftText">Total:&nbsp;</span>
                                 <span slot="rightText">&nbsp;times</span>
@@ -58,7 +58,7 @@
                         设置数据格式
                     </p>
                     <Row type="flex" justify="center" align="middle" class="countto-page-row">
-                        <div class="count-to-con">
+                        <div class="amount-to-con">
                             <CountTo :endVal="2534" :mainStyle="mainStyle" :countStyle="countStyle" :decimals="2">
                                 <span slot="leftText">Total:&nbsp;</span>
                                 <span slot="rightText">&nbsp;times</span>
@@ -76,7 +76,7 @@
                         转换单位简化数据
                     </p>
                     <Row type="flex" justify="center" align="middle" class="countto-page-row">
-                        <div class="count-to-con">
+                        <div class="amount-to-con">
                             <CountTo :simplify="true" :endVal="2534" :mainStyle="mainStyle" :countStyle="countStyle">
                                 <span slot="leftText">Total:&nbsp;</span>
                                 <span slot="rightText">&nbsp;times</span>
@@ -92,7 +92,7 @@
                         自定义单位
                     </p>
                     <Row type="flex" justify="center" align="middle" class="countto-page-row">
-                        <div class="count-to-con">
+                        <div class="amount-to-con">
                             <CountTo :simplify="true" :unit="unit" :endVal="253" :mainStyle="mainStyle2" :countStyle="countStyle2">
                                 <span slot="leftText">原始数据：253&nbsp;=>&nbsp;</span>
                             </CountTo>
@@ -113,7 +113,7 @@
                         可异步更新数据
                     </p>
                     <Row type="flex" justify="center" align="middle" class="countto-page-row">
-                        <div class="count-to-con">
+                        <div class="amount-to-con">
                             <CountTo :endVal="asynEndVal" :mainStyle="mainStyle" :countStyle="countStyle">
                                 <span slot="leftText">Total:&nbsp;</span>
                                 <span slot="rightText">&nbsp;times</span>
@@ -130,7 +130,7 @@
                     综合实例
                 </p>
                 <Row type="flex" justify="center" align="middle" class="countto-page-row">
-                    <div class="count-to-con">
+                    <div class="amount-to-con">
                         <CountTo :delay="500" :simplify="true" :unit="unit2" :endVal="integratedEndVal" :mainStyle="mainStyle" :countStyle="countStyle">
                             <span slot="leftText">原始数据:&nbsp;{{ integratedEndVal }}&nbsp;=>&nbsp;</span>
                             <span slot="rightText">&nbsp;times</span>
@@ -145,7 +145,7 @@
 <script>
 import CountTo from './CountTo.vue';
 export default {
-    name: 'count-to',
+    name: 'amount-to',
     components: {
         CountTo
     },

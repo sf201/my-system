@@ -116,7 +116,7 @@ npm run build
         ├── message  消息中心
         ├── my_components  业务组件
         │   ├── area-linkage  中国行政区级联选择器
-        │   ├── count-to  数字渐变
+        │   ├── amount-to  数字渐变
         │   ├── draggable-list  可拖拽列表
         │   ├── file-upload  文件上传
         │   ├── image-editor  图片预览编辑
@@ -154,7 +154,7 @@ npm run build
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/upload.gif)
 
 - 数字渐变
-![image](https://github.com/iview/iview-admin/raw/dev/github-gif/count-to.gif)
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/amount-to.gif)
 
 - split-pane
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/split-pane.gif)

@@ -14,7 +14,7 @@ export default {
         return {
             counter: {},
             unitText: '',
-            countId: 'count' + parseInt(Math.random() * 1000000)
+            countId: 'amount' + parseInt(Math.random() * 1000000)
         };
     },
     props: {

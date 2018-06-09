@@ -112,7 +112,7 @@ npm run build
         ├── message    //message center
         ├── my_components    //components
         │   ├── area-linkage    //China area cascade
-        │   ├── count-to    //count animation
+        │   ├── amount-to    //amount animation
         │   ├── draggable-list    //dragable list
         │   ├── file-upload    //file upload
         │   ├── image-editor    //picture editor
@@ -149,8 +149,8 @@ npm run build
 - file upload
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/upload.gif)
 
-- count animation
-![image](https://github.com/iview/iview-admin/raw/dev/github-gif/count-to.gif)
+- amount animation
+![image](https://github.com/iview/iview-admin/raw/dev/github-gif/amount-to.gif)
 
 - split-pane
 ![image](https://github.com/iview/iview-admin/raw/dev/github-gif/split-pane.gif)

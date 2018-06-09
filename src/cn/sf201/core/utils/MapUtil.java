@@ -7,14 +7,14 @@ import java.util.Map;
  */
 public class MapUtil {
     public static String getStringValue(String key, Map<String, Object> map) {
-        if (map.containsKey(key)&&map.get(key)!=null) {
+        if (map!=null&&map.containsKey(key)&&map.get(key)!=null) {
                 return map.get(key).toString();
         }
         return "";
     }
 
     public static byte getByteValue(String key, Map<String, Object> map) {
-        if (map.containsKey(key)&&map.get(key)!=null) {
+        if (map!=null&&map.containsKey(key)&&map.get(key)!=null) {
             return Byte.parseByte(map.get(key).toString());
         } else {
             return 0;
@@ -22,7 +22,7 @@ public class MapUtil {
     }
 
     public static Map<String, Object> getMapValue(String key, Map<String, Object> map) {
-        if (map.containsKey(key)&&map.get(key)!=null) {
+        if (map!=null&&map.containsKey(key)&&map.get(key)!=null) {
             return (Map<String, Object>) map.get(key);
         } else {
             return null;

@@ -21,6 +21,14 @@ Vue.filter("dict", function (value, args) {
         }
     }
 });
+Vue.filter("itemDict", function (value, args) {
+    for (let i = 0; i < args.length; i++) {
+        let item = args[i];
+        if (item.itemCode == value) {
+            return item.itemName;
+        }
+    }
+});
 Vue.filter("staff", function (input, para) {
     if (input && para && para.length > 0) {
         for (var i = 0; i < para.length; i++) {

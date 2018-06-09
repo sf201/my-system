@@ -71,7 +71,7 @@
                     <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
                             id-name="user_created_count"
-                            :end-val="count.createUser"
+                            :end-val="amount.createUser"
                             iconType="android-person-add"
                             color="#2d8cf0"
                             intro-text="今日新增用户"
@@ -80,7 +80,7 @@
                     <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
                             id-name="visit_count"
-                            :end-val="count.visit"
+                            :end-val="amount.visit"
                             iconType="ios-eye"
                             color="#64d572"
                             :iconSize="50"
@@ -90,7 +90,7 @@
                     <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
                             id-name="collection_count"
-                            :end-val="count.collection"
+                            :end-val="amount.collection"
                             iconType="upload"
                             color="#ffd572"
                             intro-text="今日数据采集量"
@@ -99,7 +99,7 @@
                     <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
                             id-name="transfer_count"
-                            :end-val="count.transfer"
+                            :end-val="amount.transfer"
                             iconType="shuffle"
                             color="#f25e43"
                             intro-text="今日服务调用量"
@@ -219,7 +219,7 @@ export default {
                     title: '去iView官网学习完整的iView组件'
                 }
             ],
-            count: {
+            amount: {
                 createUser: 496,
                 visit: 3264,
                 collection: 24389305,

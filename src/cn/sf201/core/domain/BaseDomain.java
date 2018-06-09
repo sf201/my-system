@@ -181,7 +181,7 @@ public interface BaseDomain {
 	 * @param sql
 	 * @param parameters
 	 */
-	public void executeBySQL(final String sql, final List parameters);
+	public int executeBySQL(final String sql, final List parameters);
 	/***
 	 * 自由参数查询
 	 * @param hql

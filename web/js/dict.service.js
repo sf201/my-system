@@ -24,7 +24,8 @@ app.service("dictSrv",["invokeSrv",function(invokeSrv) {
     };
     //获取仓库目录
     this.getStoreDict = function(query) {
-        return doGet("getStoreDict");
+        console.log(query);
+        return doPost("getStoreDict",query);
     };
     //获取人员目录
     this.getFixReporterDict = function(query) {

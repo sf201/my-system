@@ -201,7 +201,7 @@ public class SocketUtil {
         		int data = pis.read();        		        		        			          		        		
         		reportlength[i]=(byte)data;
 //        		按十六进制打印字符
-        		//System.out.print(Integer.toString(data, 16));
+        		//system.out.print(Integer.toString(data, 16));
         	   
         	}
         	System.out.print("++++++6");
@@ -224,7 +224,7 @@ public class SocketUtil {
             		}
             		outData[i]=(byte)data;
             		
-            		//System.out.print(Integer.toString(data, 16));
+            		//system.out.print(Integer.toString(data, 16));
             		
             		iRet = i+1;
         		}

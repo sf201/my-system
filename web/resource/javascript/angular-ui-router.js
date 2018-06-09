@@ -6298,7 +6298,7 @@ var registerUpdateUrl = function (transitionService) {
  * ```
  * .state('abc', {
  *   component: 'fooComponent',
- *   lazyLoad: () => System.import('./fooComponent')
+ *   lazyLoad: () => system.import('./fooComponent')
  *   });
  * ```
  *
