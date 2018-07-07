@@ -8,10 +8,7 @@ import cn.sf201.core.utils.DateUtil;
 import cn.sf201.core.utils.DocumentNoUtil;
 import cn.sf201.core.utils.MapUtil;
 import cn.sf201.core.utils.StringUtil;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
+import org.hibernate.criterion.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +21,7 @@ import java.util.Map;
 
 
 @Service("storeManagerService")
-@Transactional(propagation = Propagation.REQUIRED ,rollbackFor = Exception.class)
+@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 public class StoreManagerService {
     @Resource(name = "documentNoUtil")
     DocumentNoUtil documentNoUtil;
@@ -32,47 +29,49 @@ public class StoreManagerService {
     private BaseDomain itemImportMasterDomain;
     @Resource(name = "itemImportDetailDomain")
     private BaseDomain itemImportDetailDomain;
-    @Resource(name="itemStockDomain")
+    @Resource(name = "itemStockDomain")
     private BaseDomain itemStockDomain;
-    @Resource(name="deliverBillMasterDomain")
+    @Resource(name = "deliverBillMasterDomain")
     private BaseDomain deliverBillMasterDomain;
-    @Resource(name="deliverBillDetailDomain")
+    @Resource(name = "deliverBillDetailDomain")
     private BaseDomain deliverBillDetailDomain;
 
-    @Resource(name="itemDictDomain")
+    @Resource(name = "itemDictDomain")
     private BaseDomain itemDictDomain;
 
-    @Resource(name="itemStockService")
+    @Resource(name = "itemStockService")
     private ItemStockService itemStockService;
 
-    @Resource(name="defectiveProductMasterDomain")
+    @Resource(name = "defectiveProductMasterDomain")
     private BaseDomain defectiveProductMasterDomain;
-    @Resource(name="defectiveProductDetailDomain")
+    @Resource(name = "defectiveProductDetailDomain")
     private BaseDomain defectiveProductDetailDomain;
 
-    @Resource(name="itemExportMasterDomain")
+    @Resource(name = "itemExportMasterDomain")
     private BaseDomain itemExportMasterDomain;
-    @Resource(name="itemExportDetailDomain")
+    @Resource(name = "itemExportDetailDomain")
     private BaseDomain itemExportDetailDomain;
-    @Resource(name="defectiveRepairMasterDomain")
+    @Resource(name = "defectiveRepairMasterDomain")
     private BaseDomain defectiveRepairMasterDomain;
-    @Resource(name="defectiveRepairDetailDomain")
+    @Resource(name = "defectiveRepairDetailDomain")
     private BaseDomain defectiveRepairDetailDomain;
-    @Resource(name="defectiveDamageMasterDomain")
+    @Resource(name = "defectiveDamageMasterDomain")
     private BaseDomain defectiveDamageMasterDomain;
-    @Resource(name="defectiveDamageDetailDomain")
+    @Resource(name = "defectiveDamageDetailDomain")
     private BaseDomain defectiveDamageDetailDomain;
 
     /**
-     *获取入库单主记录列表
+     * 获取入库单主记录列表
+     *
      * @param para
      * @return
      * @throws RequestProcessException
      */
-    public List<ItemImportMaster> getItemImportList(Map<String,Object> para) throws RequestProcessException {
-        String documentNo = MapUtil.getStringValue("documentNo",para);
+    public List<ItemImportMaster> getItemImportList(Map<String, Object> para) throws RequestProcessException {
+        String documentNo = MapUtil.getStringValue("documentNo", para);
         String startDate = MapUtil.getStringValue("startDate", para);
         String stopDate = MapUtil.getStringValue("stopDate", para);
+        String storeCode = MapUtil.getStringValue("storeCode", para);
 
         DetachedCriteria criteria = DetachedCriteria.forClass(ItemImportMaster.class);
         if (!StringUtil.isNullOrEmpty(documentNo)) {
@@ -84,7 +83,11 @@ public class StoreManagerService {
         if (!StringUtil.isNullOrEmpty(stopDate)) {
             criteria.add(Restrictions.lt("importDateTime", DateUtil.parseDate(startDate)));
         }
-            List<ItemImportMaster> masterList = itemImportMasterDomain.queryByCriteria(criteria);
+        if (!StringUtil.isNullOrEmpty(storeCode)) {
+            criteria.add(Restrictions.eq("storeCode", storeCode));
+        }
+        criteria.addOrder(Order.desc("importDateTime"));
+        List<ItemImportMaster> masterList = itemImportMasterDomain.queryByCriteria(criteria);
 //        if (masterList != null && masterList.size() == 1) {
 //            criteriaDetail.add(Restrictions.eq("documentNo", masterList.get(0).getDocumentNo()));
 //            List<ItemImportDetail> detailList = itemImportDetailDomain.queryByCriteria(criteriaDetail);
@@ -93,7 +96,7 @@ public class StoreManagerService {
         return masterList;
     }
 
-    public List<ItemImportDetail> getItemImportDetailList(Map<String,Object> para) throws RequestProcessException {
+    public List<ItemImportDetail> getItemImportDetailList(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         DetachedCriteria criteria = DetachedCriteria.forClass(ItemImportDetail.class);
         if (!StringUtil.isNullOrEmpty(documentNo)) {
@@ -101,7 +104,6 @@ public class StoreManagerService {
         }
         return itemImportDetailDomain.queryByCriteria(criteria);
     }
-
 
 
     public ItemImportMaster saveItemImport(ItemImportMaster master) throws RequestProcessException {
@@ -130,7 +132,7 @@ public class StoreManagerService {
         }
     }
 
-    public int ackImport(Map<String,Object> para) throws RequestProcessException {
+    public int ackImport(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         if (StringUtil.isNullOrEmpty(documentNo)) {
             throw new RequestProcessException("入库单号不能为空！");
@@ -152,7 +154,7 @@ public class StoreManagerService {
             throw new RequestProcessException("该入库单没有入库明细");
         }
         for (ItemImportDetail detail : detailList) {
-            itemStockService.updateStock(master.getStoreCode(),detail.getItemCode(),detail.getItemSpec(),detail.getAmount());
+            itemStockService.updateStock(master.getStoreCode(), detail.getItemCode(), detail.getItemSpec(), detail.getAmount());
 //            updateStockService.UpdateStock(detail.getDocumentNo(),detail.getItemCode(),detail.getItemCode(),detail.getItemSpec(),detail.getAmount());
         }
         master.setAcked(true);
@@ -161,12 +163,15 @@ public class StoreManagerService {
     }
 
 
-
-    public List<DeliverBillMaster> getDeliverMasterList(Map<String,Object> para) throws RequestProcessException {
-        String documentNo = MapUtil.getStringValue("documentNo",para);
+    public List<DeliverBillMaster> getDeliverMasterList(Map<String, Object> para) throws RequestProcessException {
+        String documentNo = MapUtil.getStringValue("documentNo", para);
+        String houseResourceNo = MapUtil.getStringValue("houseResourceNo", para);
         String startDate = MapUtil.getStringValue("startDate", para);
         String stopDate = MapUtil.getStringValue("stopDate", para);
         DetachedCriteria criteria = DetachedCriteria.forClass(DeliverBillMaster.class);
+        if (!StringUtil.isNullOrEmpty(houseResourceNo)) {
+            criteria.add(Restrictions.eq("houseResourceNo", houseResourceNo));
+        }
         if (!StringUtil.isNullOrEmpty(documentNo)) {
             criteria.add(Restrictions.eq("documentNo", documentNo));
         }
@@ -186,7 +191,7 @@ public class StoreManagerService {
     }
 
 
-    public List<DeliverBillDetail> getDeliverDetailList(Map<String,Object> para) throws RequestProcessException {
+    public List<DeliverBillDetail> getDeliverDetailList(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         DetachedCriteria criteria = DetachedCriteria.forClass(DeliverBillDetail.class);
         if (!StringUtil.isNullOrEmpty(documentNo)) {
@@ -221,7 +226,7 @@ public class StoreManagerService {
         }
     }
 
-    public int ackDeliver(Map<String,Object> para) throws RequestProcessException {
+    public int ackDeliver(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         if (StringUtil.isNullOrEmpty(documentNo)) {
             throw new RequestProcessException("发货单号不能为空！");
@@ -243,7 +248,7 @@ public class StoreManagerService {
             throw new RequestProcessException("该发货单没有发货明细");
         }
         for (DeliverBillDetail detail : detailList) {
-            itemStockService.updateStock(detail.getStoreCode(),detail.getItemCode(),detail.getItemSpec(),detail.getAmount()*-1);
+            itemStockService.updateStock(detail.getStoreCode(), detail.getItemCode(), detail.getItemSpec(), detail.getAmount() * -1);
 //            updateStockService.UpdateStock(detail.getDocumentNo(),detail.getDefectiveStoreCode(),detail.getItemCode(),detail.getItemSpec(),-detail.getAmount());
         }
         master.setAcked(true);
@@ -253,14 +258,15 @@ public class StoreManagerService {
 
     /**
      * 获取某个仓库的库存信息
+     *
      * @param para
      * @return
      * @throws RequestProcessException
      */
     public List<ItemDict> getItemDictBySoreCode(Map<String, Object> para) throws RequestProcessException {
-        DetachedCriteria criteria = DetachedCriteria.forClass(ItemDict.class,"item");
+        DetachedCriteria criteria = DetachedCriteria.forClass(ItemDict.class, "item");
 
-        DetachedCriteria subCriteria = DetachedCriteria.forClass(ItemStock.class,"stock");
+        DetachedCriteria subCriteria = DetachedCriteria.forClass(ItemStock.class, "stock");
         String storeCode = MapUtil.getStringValue("storeCode", para);
         if (StringUtil.isNullOrEmpty(storeCode)) {
             throw new RequestProcessException("仓库代码不能为空！");
@@ -277,8 +283,10 @@ public class StoreManagerService {
         return itemDictDomain.queryByCriteria(criteria);
     }
 
-    public List<DefectiveProductMaster> getDefectiveProductMasterList(Map<String,Object> para) throws RequestProcessException {
-        String documentNo = MapUtil.getStringValue("documentNo",para);
+    public List<DefectiveProductMaster> getDefectiveProductMasterList(Map<String, Object> para) throws RequestProcessException {
+        String documentNo = MapUtil.getStringValue("documentNo", para);
+        String deliverDocumentNo = MapUtil.getStringValue("deliverDocumentNo", para);
+        String storeCode = MapUtil.getStringValue("storeCode", para);
         String startDate = MapUtil.getStringValue("startDate", para);
         String stopDate = MapUtil.getStringValue("stopDate", para);
         DetachedCriteria criteria = DetachedCriteria.forClass(DefectiveProductMaster.class);
@@ -291,12 +299,18 @@ public class StoreManagerService {
         if (!StringUtil.isNullOrEmpty(stopDate)) {
             criteria.add(Restrictions.lt("registDateTime", DateUtil.parseDate(stopDate)));
         }
+        if (!StringUtil.isNullOrEmpty(deliverDocumentNo)) {
+            criteria.add(Restrictions.eq("deliverDocumentNo", deliverDocumentNo));
+        }
+        if (!StringUtil.isNullOrEmpty(storeCode)) {
+            criteria.add(Restrictions.eq("storeCode", storeCode));
+        }
         List<DefectiveProductMaster> masterList = defectiveProductMasterDomain.queryByCriteria(criteria);
         return masterList;
     }
 
 
-    public List<DefectiveProductDetail> getDefectiveProductDetailList(Map<String,Object> para) throws RequestProcessException {
+    public List<DefectiveProductDetail> getDefectiveProductDetailList(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         DetachedCriteria criteria = DetachedCriteria.forClass(DefectiveProductDetail.class);
         if (!StringUtil.isNullOrEmpty(documentNo)) {
@@ -331,7 +345,7 @@ public class StoreManagerService {
         }
     }
 
-    public int ackDefectiveProduct(Map<String,Object> para) throws RequestProcessException {
+    public int ackDefectiveProduct(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         if (StringUtil.isNullOrEmpty(documentNo)) {
             throw new RequestProcessException("不良品登记单号不能为空！");
@@ -353,7 +367,7 @@ public class StoreManagerService {
             throw new RequestProcessException("该不良品登记单没有明细记录");
         }
         for (DefectiveProductDetail detail : detailList) {
-            itemStockService.updateStock(master.getStoreCode(),detail.getItemCode(),detail.getItemSpec(),detail.getAmount());
+            itemStockService.updateStock(master.getStoreCode(), detail.getItemCode(), detail.getItemSpec(), detail.getAmount());
 //            updateStockService.UpdateStock(detail.getDocumentNo(),detail.getDefectiveStoreCode(),detail.getItemCode(),detail.getItemSpec(),-detail.getAmount());
         }
         master.setAcked(true);
@@ -362,8 +376,10 @@ public class StoreManagerService {
     }
 
     /**********************出库管理***********************/
-    public List<ExportMaster> getExportMasterList(Map<String,Object> para) throws RequestProcessException {
-        String documentNo = MapUtil.getStringValue("documentNo",para);
+    public List<ExportMaster> getExportMasterList(Map<String, Object> para) throws RequestProcessException {
+        String documentNo = MapUtil.getStringValue("documentNo", para);
+        String storeCode = MapUtil.getStringValue("storeCode", para);
+        String receiver = MapUtil.getStringValue("receiver", para);
         String startDate = MapUtil.getStringValue("startDate", para);
         String stopDate = MapUtil.getStringValue("stopDate", para);
         DetachedCriteria criteria = DetachedCriteria.forClass(ExportMaster.class);
@@ -376,12 +392,17 @@ public class StoreManagerService {
         if (!StringUtil.isNullOrEmpty(stopDate)) {
             criteria.add(Restrictions.lt("exportDateTime", DateUtil.parseDate(stopDate)));
         }
+        if (!StringUtil.isNullOrEmpty(storeCode)) {
+            criteria.add(Restrictions.eq("storeCode", storeCode));
+        }
+        if (!StringUtil.isNullOrEmpty(receiver)) {
+            criteria.add(Restrictions.like("receiver", "%"+ receiver+"%"));
+        }
         List<ExportMaster> masterList = itemExportMasterDomain.queryByCriteria(criteria);
-
         return masterList;
     }
 
-    public List<ExportDetail> getExportDetailList(Map<String,Object> para) throws RequestProcessException {
+    public List<ExportDetail> getExportDetailList(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         DetachedCriteria criteria = DetachedCriteria.forClass(ExportDetail.class);
         if (!StringUtil.isNullOrEmpty(documentNo)) {
@@ -416,7 +437,7 @@ public class StoreManagerService {
         }
     }
 
-    public int ackExport(Map<String,Object> para) throws RequestProcessException {
+    public int ackExport(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         if (StringUtil.isNullOrEmpty(documentNo)) {
             throw new RequestProcessException("出库单号不能为空！");
@@ -438,7 +459,7 @@ public class StoreManagerService {
             throw new RequestProcessException("该出库单没有出库明细");
         }
         for (ExportDetail detail : detailList) {
-            itemStockService.updateStock(master.getStoreCode(),detail.getItemCode(),detail.getItemSpec(),detail.getAmount()*-1);
+            itemStockService.updateStock(master.getStoreCode(), detail.getItemCode(), detail.getItemSpec(), detail.getAmount() * -1);
 //            updateStockService.UpdateStock(detail.getDocumentNo(),detail.getDefectiveStoreCode(),detail.getItemCode(),detail.getItemSpec(),-detail.getAmount());
         }
         master.setAcked(true);
@@ -447,8 +468,8 @@ public class StoreManagerService {
     }
 
     /**********************不良品修复管理***********************/
-    public List<DefectiveRepairMaster> getDefectiveRepairMasterList(Map<String,Object> para) throws RequestProcessException {
-        String documentNo = MapUtil.getStringValue("documentNo",para);
+    public List<DefectiveRepairMaster> getDefectiveRepairMasterList(Map<String, Object> para) throws RequestProcessException {
+        String documentNo = MapUtil.getStringValue("documentNo", para);
         String startDate = MapUtil.getStringValue("startDate", para);
         String stopDate = MapUtil.getStringValue("stopDate", para);
         DetachedCriteria criteria = DetachedCriteria.forClass(DefectiveRepairMaster.class);
@@ -466,7 +487,7 @@ public class StoreManagerService {
         return masterList;
     }
 
-    public List<DefectiveRepairDetail> getDefectiveRepairDetailList(Map<String,Object> para) throws RequestProcessException {
+    public List<DefectiveRepairDetail> getDefectiveRepairDetailList(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         DetachedCriteria criteria = DetachedCriteria.forClass(DefectiveRepairDetail.class);
         if (!StringUtil.isNullOrEmpty(documentNo)) {
@@ -501,7 +522,7 @@ public class StoreManagerService {
         }
     }
 
-    public int ackDefectiveRepair(Map<String,Object> para) throws RequestProcessException {
+    public int ackDefectiveRepair(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         if (StringUtil.isNullOrEmpty(documentNo)) {
             throw new RequestProcessException("不良品修复单号不能为空！");
@@ -523,8 +544,8 @@ public class StoreManagerService {
             throw new RequestProcessException("该不良品修复单没有明细信息");
         }
         for (DefectiveRepairDetail detail : detailList) {
-            itemStockService.updateStock(master.getDefectiveStoreCode(),detail.getItemCode(),detail.getItemSpec(),detail.getAmount()*-1);
-            itemStockService.updateStock(master.getStoreCode(),detail.getItemCode(),detail.getItemSpec(),detail.getAmount());
+            itemStockService.updateStock(master.getDefectiveStoreCode(), detail.getItemCode(), detail.getItemSpec(), detail.getAmount() * -1);
+            itemStockService.updateStock(master.getStoreCode(), detail.getItemCode(), detail.getItemSpec(), detail.getAmount());
 //            updateStockService.UpdateStock(detail.getDocumentNo(),detail.getDefectiveStoreCode(),detail.getItemCode(),detail.getItemSpec(),-detail.getAmount());
         }
         master.setAcked(true);
@@ -534,8 +555,9 @@ public class StoreManagerService {
 
 
     /**********************不良品报损管理***********************/
-    public List<DefectiveDamageMaster> getDefectiveDamageMasterList(Map<String,Object> para) throws RequestProcessException {
-        String documentNo = MapUtil.getStringValue("documentNo",para);
+    public List<DefectiveDamageMaster> getDefectiveDamageMasterList(Map<String, Object> para) throws RequestProcessException {
+        String documentNo = MapUtil.getStringValue("documentNo", para);
+        String storeCode = MapUtil.getStringValue("storeCode", para);
         String startDate = MapUtil.getStringValue("startDate", para);
         String stopDate = MapUtil.getStringValue("stopDate", para);
         DetachedCriteria criteria = DetachedCriteria.forClass(DefectiveDamageMaster.class);
@@ -548,13 +570,16 @@ public class StoreManagerService {
         if (!StringUtil.isNullOrEmpty(stopDate)) {
             criteria.add(Restrictions.lt("damageDateTime", DateUtil.parseDate(stopDate)));
         }
+        if (!StringUtil.isNullOrEmpty(storeCode)) {
+            criteria.add(Restrictions.eq("storeCode",storeCode));
+        }
         List<DefectiveDamageMaster> masterList = defectiveRepairMasterDomain.queryByCriteria(criteria);
 
         return masterList;
     }
 
 
-    public List<DefectiveDamageDetail> getDefectiveDamageDetailList(Map<String,Object> para) throws RequestProcessException {
+    public List<DefectiveDamageDetail> getDefectiveDamageDetailList(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         DetachedCriteria criteria = DetachedCriteria.forClass(DefectiveDamageDetail.class);
         if (!StringUtil.isNullOrEmpty(documentNo)) {
@@ -589,7 +614,7 @@ public class StoreManagerService {
         }
     }
 
-    public int ackDefectiveDamage(Map<String,Object> para) throws RequestProcessException {
+    public int ackDefectiveDamage(Map<String, Object> para) throws RequestProcessException {
         String documentNo = MapUtil.getStringValue("documentNo", para);
         if (StringUtil.isNullOrEmpty(documentNo)) {
             throw new RequestProcessException("不良品报损单号不能为空！");
@@ -611,7 +636,7 @@ public class StoreManagerService {
             throw new RequestProcessException("该不良品报损单没有明细信息");
         }
         for (DefectiveDamageDetail detail : detailList) {
-            itemStockService.updateStock(master.getStoreCode(),detail.getItemCode(),detail.getItemSpec(),detail.getAmount()*-1);
+            itemStockService.updateStock(master.getStoreCode(), detail.getItemCode(), detail.getItemSpec(), detail.getAmount() * -1);
 //            updateStockService.UpdateStock(detail.getDocumentNo(),detail.getDefectiveStoreCode(),detail.getItemCode(),detail.getItemSpec(),-detail.getAmount());
         }
         master.setAcked(true);

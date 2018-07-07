@@ -131,6 +131,13 @@ export const appRouter = [
         component: Main,
         children: [
             {
+                path: 'user-mgr',
+                icon: 'android-globe',
+                name: 'userMgr',
+                title: '用户管理',
+                component: () => import('@/views/my-system/user/user-manager.vue')
+            },
+            {
                 path: 'item-dict',
                 icon: 'android-globe',
                 name: 'itemDict',
@@ -302,6 +309,27 @@ export const appRouter = [
         component: Main,
         children: [
             {
+                path: 'import-list',
+                title: '入库单列表',
+                name: 'importList',
+                icon: 'compose',
+                component: () => import('@/views/my-system/store-manager/import-list.vue')
+            },
+            {
+                path: 'deliver-list',
+                title: '发货单列表',
+                name: 'deliverList',
+                icon: 'compose',
+                component: () => import('@/views/my-system/store-manager/deliver-list.vue')
+            },
+            {
+                path: 'export-list',
+                title: '出库单列表',
+                name: 'exportList',
+                icon: 'compose',
+                component: () => import('@/views/my-system/store-manager/export-list.vue')
+            },
+            {
                 path: 'import/:documentNo?',
                 title: '入库单',
                 name: 'import',
@@ -348,23 +376,44 @@ export const appRouter = [
         component: Main,
         children: [
             {
+                path: 'defective-product-list',
+                title: '不良品登记列表',
+                name: 'defectiveProductList',
+                icon: 'compose',
+                component: () => import('@/views/my-system/store-manager/defective-product-list.vue')
+            },
+            {
+                path: 'defective-damage-list',
+                title: '不良品报损列表',
+                name: 'defectiveDamageList',
+                icon: 'compose',
+                component: () => import('@/views/my-system/store-manager/defective-damage-list.vue')
+            },
+            {
+                path: 'defective-repair-list',
+                title: '不良品修复列表',
+                name: 'defectiveRepairList',
+                icon: 'compose',
+                component: () => import('@/views/my-system/store-manager/defective-repair-list.vue')
+            },
+            {
                 path: 'defective-product/:documentNo?',
                 title: '不良品登记单',
-                name: 'defective-product',
+                name: 'defectiveProduct',
                 icon: 'compose',
                 component: () => import('@/views/my-system/store-manager/defective-product.vue')
             },
             {
                 path: 'defective-damage/:documentNo?',
                 title: '不良品报损单',
-                name: 'defective-damage',
+                name: 'defectiveDamage',
                 icon: 'compose',
                 component: () => import('@/views/my-system/store-manager/defective-damage.vue')
             },
             {
                 path: 'defective-repair/:documentNo?',
                 title: '不良品修复单',
-                name: 'defective-repair',
+                name: 'defectiveRepair',
                 icon: 'compose',
                 component: () => import('@/views/my-system/store-manager/defective-repair.vue')
             },

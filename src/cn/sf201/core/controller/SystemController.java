@@ -1,5 +1,6 @@
 package cn.sf201.core.controller;
 
+import cn.sf201.core.annotations.Auth;
 import cn.sf201.core.common.Common;
 import cn.sf201.core.entity.*;
 import cn.sf201.core.entity.system.*;
@@ -21,6 +22,7 @@ import java.util.Map;
  */
 @Controller("systemController")
 @RequestMapping("/system.do")
+@Auth(name="system")
 public class SystemController extends BaseAjaxController {
 
     @Resource(name = "dictService")

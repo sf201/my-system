@@ -39,11 +39,12 @@
 
 <script>
 import Cookies from 'js-cookie';
+import userSrv from "../libs/user.service";
 export default {
     data () {
         return {
             form: {
-                userName: 'iview_admin',
+                userName: '',
                 password: ''
             },
             rules: {
@@ -58,19 +59,32 @@ export default {
     },
     methods: {
         handleSubmit () {
-            this.$refs.loginForm.validate((valid) => {
+            let vm = this;
+            vm.$refs.loginForm.validate((valid) => {
                 if (valid) {
-                    Cookies.set('user', this.form.userName);
-                    Cookies.set('password', this.form.password);
-                    this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
-                    if (this.form.userName === 'iview_admin') {
-                        Cookies.set('access', 0);
-                    } else {
-                        Cookies.set('access', 1);
-                    }
-                    this.$router.push({
-                        name: 'home_index'
-                    });
+                    userSrv.login(vm.form).then(function(res) {
+                        if(res&&res.data&&res.data.id) {
+                            Cookies.set('user', vm.form.userName);
+                            Cookies.set('password', vm.form.password);
+                            if (vm.form.userName === 'iview_admin') {
+                                Cookies.set('access', 0);
+                            } else {
+                                Cookies.set('access', 1);
+                            }
+                            vm.$router.push({
+                                name: 'home_index'
+                            });
+                        }else {
+                            let msg = "登录失败";
+                            if(res&&res.data&res.data.err) {
+                                msg += res.data.err;
+                            }
+                            vm.$Message.error(msg);
+                        }
+                    }).catch(function(res) {
+                        vm.$Message.error("登录异常！");
+                    })
+
                 }
             });
         }

@@ -21,6 +21,14 @@ Vue.filter("dict", function (value, args) {
         }
     }
 });
+Vue.filter("storeDict", function (value, args) {
+    for (let i = 0; i < args.length; i++) {
+        let item = args[i];
+        if (item.serialNo == value) {
+            return item.name;
+        }
+    }
+});
 Vue.filter("itemDict", function (value, args) {
     for (let i = 0; i < args.length; i++) {
         let item = args[i];

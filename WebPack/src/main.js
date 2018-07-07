@@ -13,7 +13,7 @@ import  './libs/dict.filter';
 Vue.use(VueI18n);
 Vue.use(iView);
 
-new Vue({
+window.vueMain= new Vue({
     el: '#app',
     router: router,
     store: store,

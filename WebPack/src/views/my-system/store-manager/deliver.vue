@@ -33,8 +33,8 @@
             </Row>
             <Row>
                 <Col span="10">
-                <FormItem label="房源编号" prop="memo">
-                    <Input :readonly="true" placeholder="点击右侧按键先把房源编号" v-model="master.memo"></Input>
+                <FormItem label="房源编号" prop="houseResourceNo">
+                    <Input :readonly="true" placeholder="点击右侧按键先把房源编号" v-model="master.houseResourceNo"></Input>
                 </FormItem>
                 </Col>
                 <Col span="2">
@@ -217,7 +217,7 @@
                 houseColumns: [
                     {
                         title: '房源编号',
-                        key: 'memo'
+                        key: 'houseResourceNo'
                     },
                     {
                         title: '小区',
@@ -245,7 +245,7 @@
                     deliverDateTime: [
                         {required: true, type: 'date', message: '发货日期不能为空！', trigger: 'change'}
                     ],
-                    memo: [
+                    houseResourceNo: [
                         {required: true, type: 'string', message: '房源编号不能为空！', trigger: 'change'}
                     ],
                     keyCode: [
@@ -268,7 +268,7 @@
                 this.houseQuery.house = newValue;
             },
             houseDblClicked(house, index) {
-                this.master.memo = house.memo;
+                this.master.houseResourceNo = house.houseResourceNo;
                 this.master.address = dictFilter(house.areaCode, this.areaDict) + house.communityName + house.building + house.unit + house.roomNo;
                 this.showSelectHouse = false;
             },

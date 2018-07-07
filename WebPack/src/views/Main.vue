@@ -58,7 +58,7 @@
         </div>
         <div class="single-page-con" :style="{left: shrink?'60px':'200px'}">
             <div class="single-page">
-                <keep-alive :include="cachePage">
+                <keep-alive >
                     <router-view></router-view>
                 </keep-alive>
             </div>
@@ -74,6 +74,7 @@
     import messageTip from './main-components/message-tip.vue';
     import themeSwitch from './main-components/theme-switch/theme-switch.vue';
     import Cookies from 'js-cookie';
+    import userSrv from "../libs/user.service";
     import util from '@/libs/util.js';
     
     export default {
@@ -137,18 +138,21 @@
                 this.shrink = !this.shrink;
             },
             handleClickUserDropdown (name) {
+                let vm = this;
                 if (name === 'ownSpace') {
-                    util.openNewPage(this, 'ownspace_index');
+                    util.openNewPage(vm, 'ownspace_index');
                     this.$router.push({
                         name: 'ownspace_index'
                     });
                 } else if (name === 'loginout') {
-                    // 退出登录
-                    this.$store.commit('logout', this);
-                    this.$store.commit('clearOpenedSubmenu');
-                    this.$router.push({
-                        name: 'login'
-                    });
+                    userSrv.logout().then(function(data) {
+                        // 退出登录
+                        vm.$store.commit('logout', vm);
+                        vm.$store.commit('clearOpenedSubmenu');
+                        vm.$router.push({
+                            name: 'login'
+                        });
+                    })
                 }
             },
             checkTag (name) {

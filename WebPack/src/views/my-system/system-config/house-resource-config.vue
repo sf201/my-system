@@ -66,8 +66,8 @@
                 </Row>
                 <Row>
                     <Col span="12">
-                    <FormItem label="房源编号" prop="memo">
-                        <Input v-model="query.memo"></Input>
+                    <FormItem label="房源编号" prop="houseResourceNo">
+                        <Input v-model="query.houseResourceNo"></Input>
                     </FormItem>
                     </Col>
                     <Col span="12">
@@ -201,7 +201,7 @@
                         title: '房号'
                     },
                     {
-                        key: 'memo',
+                        key: 'houseResourceNo',
                         title: '房源编号'
                     },
                     {
@@ -241,7 +241,7 @@
                     building:[{required:true,message:'栋号不能为空！',trigger:'blur'}],
                     unit:[{required:true,message:'单元不能为空！',trigger:'blur'}],
                     roomNo:[{required:true,message:'房号不能为空！',trigger:'blur'}],
-                    memo:[{required:true,message:'房源编号不能为空！',trigger:'blur'}],
+                    houseResourceNo:[{required:true,message:'房源编号不能为空！',trigger:'blur'}],
                     houseContractNo:[{required:true,message:'收房合同号不能为空！',trigger:'blur'}],
                     specialistName:[{required:true,message:'专员姓名不能为空！',trigger:'blur'}],
                     specialistPhone:[{required:true,message:'专员号码不能为空！',trigger:'blur'}],

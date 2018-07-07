@@ -1,5 +1,6 @@
 package cn.sf201.core.controller;
 
+import cn.sf201.core.annotations.Auth;
 import cn.sf201.core.entity.store.*;
 import cn.sf201.core.exception.RequestProcessException;
 import cn.sf201.core.service.ItemStockService;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 @Controller("storeManagerController")
 @RequestMapping("/storeManager.do")
+@Auth(name="store")
 public class StoreManagerController extends BaseAjaxController {
     @Resource(name = "storeManagerService")
     private StoreManagerService storeManagerService;
